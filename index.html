@@ -16,7 +16,6 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 </style>
 </head>
 <body>
-
 <!-- Paste this navigation code at the top of your HTML pages -->
 <style>
   /* Navigation Styles */
@@ -226,7 +225,7 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 
       <!-- Projects Dropdown -->
       <div class="nav-dropdown" id="projectsDropdown">
-        <button class="nav-button nav-primary-button" onclick="toggleDropdown()">
+        <button class="nav-button nav-primary-button" onclick="toggleDropdown(event)">
           Projects
           <svg class="nav-icon nav-icon-small" style="margin-left: 4px;" viewBox="0 0 24 24">
             <polyline points="6,9 12,15 18,9"/>
@@ -274,6 +273,51 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   </div>
 </header>
 
+<script>
+  // Dropdown functionality
+  function toggleDropdown(event) {
+    event.stopPropagation(); // Prevent event bubbling
+    const dropdown = document.getElementById('projectsDropdown');
+    dropdown.classList.toggle('active');
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('projectsDropdown');
+    if (!dropdown.contains(event.target)) {
+      dropdown.classList.remove('active');
+    }
+  });
+
+  // Prevent dropdown from closing when clicking inside it
+  document.getElementById('projectsDropdown').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+
+  // Simple theme toggle (optional)
+  function toggleTheme() {
+    const html = document.documentElement;
+    const lightIcon = document.querySelector('.theme-icon-light');
+    const darkIcon = document.querySelector('.theme-icon-dark');
+    
+    if (html.style.colorScheme === 'dark') {
+      html.style.colorScheme = 'light';
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    } else {
+      html.style.colorScheme = 'dark';
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    }
+  }
+
+  // Close dropdown on escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      document.getElementById('projectsDropdown').classList.remove('active');
+    }
+  });
+</script>
 <script>
   // Dropdown functionality
   function toggleDropdown() {
