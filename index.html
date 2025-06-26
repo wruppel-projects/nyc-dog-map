@@ -17,87 +17,303 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 </head>
 <body>
 
-<header style="
- position: sticky;
- top: 0;
- z-index: 50;
- width: 100%;
- border-bottom: 1px solid #e5e7eb;
- background: rgba(255, 255, 255, 0.95);
- backdrop-filter: blur(8px);
- box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-">
-<div style="
-   max-width: 1200px;
-   margin: 0 auto;
-   padding: 0 1rem;
-   display: flex;
-   height: 4rem;
-   align-items: center;
-   justify-content: space-between;
- ">
-<a href="https://willruppel.com" style="
-     display: inline-flex;
-     align-items: center;
-     justify-content: center;
-     width: 2.5rem;
-     height: 2.5rem;
-     border-radius: 0.375rem;
-     background: transparent;
-     border: none;
-     color: inherit;
-     text-decoration: none;
-     transition: background-color 0.2s;
-   " onmouseover="this.style.backgroundColor='#f3f4f6'" onmouseout="this.style.backgroundColor='transparent'">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-<polyline points="9,22 9,12 15,12 15,22"/>
-</svg>
-</a>
+<!-- Paste this navigation code at the top of your HTML pages -->
+<style>
+  /* Navigation Styles */
+  .nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    border-bottom: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+  
+  .nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .nav-button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  .nav-icon-button {
+    height: 40px;
+    width: 40px;
+    background: transparent;
+    color: #374151;
+  }
+  
+  .nav-icon-button:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  .nav-primary-button {
+    height: 40px;
+    padding: 0 16px;
+    background: #111827;
+    color: white;
+  }
+  
+  .nav-primary-button:hover {
+    background: #1f2937;
+  }
+  
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .nav-dropdown {
+    position: relative;
+  }
+  
+  .nav-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 4px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    min-width: 224px;
+    z-index: 50;
+  }
+  
+  .nav-dropdown.active .nav-dropdown-content {
+    display: block;
+  }
+  
+  .nav-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #374151;
+    transition: background-color 0.2s;
+    font-size: 14px;
+  }
+  
+  .nav-dropdown-item:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .nav-dropdown-separator {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 4px 0;
+  }
+  
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .nav-icon-small {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Dark mode styles */
+  @media (prefers-color-scheme: dark) {
+    .nav-header {
+      background: rgba(17, 24, 39, 0.95);
+      border-bottom-color: #374151;
+    }
+    
+    .nav-icon-button {
+      color: #d1d5db;
+    }
+    
+    .nav-icon-button:hover {
+      background: #374151;
+      color: #f9fafb;
+    }
+    
+    .nav-dropdown-content {
+      background: #1f2937;
+      border-color: #374151;
+    }
+    
+    .nav-dropdown-item {
+      color: #d1d5db;
+    }
+    
+    .nav-dropdown-item:hover {
+      background-color: #374151;
+    }
+    
+    .nav-dropdown-separator {
+      background-color: #374151;
+    }
+  }
+  
+  /* Hide on small screens if needed */
+  @media (max-width: 768px) {
+    .nav-container {
+      padding: 0 12px;
+    }
+  }
+</style>
 
-<nav style="display: none; gap: 1.5rem;" class="md:flex">
-<a href="https://willruppel.com#projects" style="color: #6b7280; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">Projects</a>
-<a href="https://willruppel.com#about" style="color: #6b7280; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">About</a>
-</nav>
+<header class="nav-header">
+  <div class="nav-container">
+    <!-- Home Button -->
+    <a href="https://willruppel.xyz" class="nav-button nav-icon-button" title="Home">
+      <svg class="nav-icon" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9,22 9,12 15,12 15,22"/>
+      </svg>
+    </a>
 
-<div style="display: flex; align-items: center; gap: 0.5rem;">
-<a href="https://www.linkedin.com/in/wjruppel/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 0.375rem; background: transparent; border: none; color: inherit; text-decoration: none; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f3f4f6'" onmouseout="this.style.backgroundColor='transparent'">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-</a>
+    <!-- Spacer -->
+    <div></div>
 
-<div style="position: relative; display: inline-block;" data-dropdown-container>
-<button onclick="toggleDropdown()" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem; height: 2.5rem; padding: 0 1rem; border-radius: 0.375rem; border: none; background: #000000; color: #ffffff; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#333333'" onmouseout="this.style.backgroundColor='#000000'">
-Projects
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-</button>
+    <!-- Right Side Navigation -->
+    <div class="nav-right">
+      <!-- Theme Toggle (Optional - you can remove this if not needed) -->
+      <button class="nav-button nav-icon-button" onclick="toggleTheme()" title="Toggle theme">
+        <svg class="nav-icon theme-icon-light" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="nav-icon theme-icon-dark" viewBox="0 0 24 24" style="display: none;">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
 
-<div id="projectsDropdown" style="position: absolute; right: 0; top: 100%; margin-top: 0.25rem; width: 16rem; border-radius: 0.375rem; border: 1px solid #e5e7eb; background: #ffffff; color: #000000; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); z-index: 50; display: none;">
+      <!-- LinkedIn Button -->
+      <a href="https://www.linkedin.com/in/wjruppel/" target="_blank" rel="noopener noreferrer" class="nav-button nav-icon-button" title="LinkedIn">
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect width="4" height="12" x="2" y="9"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
 
- <a href="https://nyc-weather.willruppel.com/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.5rem 0.75rem; text-decoration: none; color: inherit; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='#ffffff'">
-<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">NYC Weather App</span>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-</a>
- 
-<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Dog Data by Neighborhood</span>  <span style="margin-left: 0.5rem; font-size: 0.75rem; color: #6b7280;">Current</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-
-
- <a href="https://nyc-restaurant-radar.replit.app/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.5rem 0.75rem; text-decoration: none; color: inherit; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='#ffffff'">
-<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">NYC Food Radar</span>
-           
-           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-
-</a>
-<a href="https://today-in-grateful-dead.replit.app/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.5rem 0.75rem; text-decoration: none; color: inherit; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='#ffffff'">
-<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Today in Grateful Dead</span>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-</a>
-</div>
-</div>
-</div>
-</div>
+      <!-- Projects Dropdown -->
+      <div class="nav-dropdown" id="projectsDropdown">
+        <button class="nav-button nav-primary-button" onclick="toggleDropdown()">
+          Projects
+          <svg class="nav-icon nav-icon-small" style="margin-left: 4px;" viewBox="0 0 24 24">
+            <polyline points="6,9 12,15 18,9"/>
+          </svg>
+        </button>
+        <div class="nav-dropdown-content">
+          <a href="https://nyc-weather.willruppel.com/" target="_blank" rel="noopener noreferrer" class="nav-dropdown-item">
+            <svg class="nav-icon nav-icon-small" viewBox="0 0 24 24">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15,3 21,3 21,9"/>
+              <line x1="10" x2="21" y1="14" y2="3"/>
+            </svg>
+            NYC Weather App
+          </a>
+          <div class="nav-dropdown-separator"></div>
+          <a href="https://nyc-dog-map.willruppel.com/" target="_blank" rel="noopener noreferrer" class="nav-dropdown-item">
+            <svg class="nav-icon nav-icon-small" viewBox="0 0 24 24">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15,3 21,3 21,9"/>
+              <line x1="10" x2="21" y1="14" y2="3"/>
+            </svg>
+            Dog Data by Neighborhood
+          </a>
+          <div class="nav-dropdown-separator"></div>
+          <a href="https://nyc-restaurant-radar.replit.app/" target="_blank" rel="noopener noreferrer" class="nav-dropdown-item">
+            <svg class="nav-icon nav-icon-small" viewBox="0 0 24 24">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15,3 21,3 21,9"/>
+              <line x1="10" x2="21" y1="14" y2="3"/>
+            </svg>
+            NYC Restaurant Radar
+          </a>
+          <div class="nav-dropdown-separator"></div>
+          <a href="https://today-in-grateful-dead.replit.app/" target="_blank" rel="noopener noreferrer" class="nav-dropdown-item">
+            <svg class="nav-icon nav-icon-small" viewBox="0 0 24 24">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15,3 21,3 21,9"/>
+              <line x1="10" x2="21" y1="14" y2="3"/>
+            </svg>
+            On This Day in Grateful Dead History
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
+<script>
+  // Dropdown functionality
+  function toggleDropdown() {
+    const dropdown = document.getElementById('projectsDropdown');
+    dropdown.classList.toggle('active');
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('projectsDropdown');
+    if (!dropdown.contains(event.target)) {
+      dropdown.classList.remove('active');
+    }
+  });
+
+  // Simple theme toggle (optional)
+  function toggleTheme() {
+    const html = document.documentElement;
+    const lightIcon = document.querySelector('.theme-icon-light');
+    const darkIcon = document.querySelector('.theme-icon-dark');
+    
+    if (html.style.colorScheme === 'dark') {
+      html.style.colorScheme = 'light';
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    } else {
+      html.style.colorScheme = 'dark';
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    }
+  }
+
+  // Close dropdown on escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      document.getElementById('projectsDropdown').classList.remove('active');
+    }
+  });
+</script>
+ 
 <script>
 function toggleDropdown() {
 const dropdown = document.getElementById('projectsDropdown');
