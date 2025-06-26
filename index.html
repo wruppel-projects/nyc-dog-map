@@ -52,11 +52,12 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
+    outline: none;
   }
   
   .nav-button:focus {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6;
   }
   
   .nav-icon-button {
@@ -82,6 +83,10 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     background: #1f2937;
   }
   
+  .nav-primary-button:active {
+    background: #111827;
+  }
+  
   .nav-right {
     display: flex;
     align-items: center;
@@ -96,18 +101,24 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     display: none;
     position: absolute;
     right: 0;
-    top: 100%;
-    margin-top: 4px;
+    top: calc(100% + 4px);
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     min-width: 224px;
-    z-index: 50;
+    z-index: 1001;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
   }
   
-  .nav-dropdown.active .nav-dropdown-content {
+  .nav-dropdown.show .nav-dropdown-content {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
   
   .nav-dropdown-item {
@@ -119,6 +130,10 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     color: #374151;
     transition: background-color 0.2s;
     font-size: 14px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
   }
   
   .nav-dropdown-item:hover {
@@ -204,7 +219,7 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     <!-- Right Side Navigation -->
     <div class="nav-right">
       <!-- Theme Toggle (Optional - you can remove this if not needed) -->
-      <button class="nav-button nav-icon-button" onclick="toggleTheme()" title="Toggle theme">
+      <button class="nav-button nav-icon-button" id="themeToggle" title="Toggle theme">
         <svg class="nav-icon theme-icon-light" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="5"/>
           <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
@@ -225,13 +240,13 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 
       <!-- Projects Dropdown -->
       <div class="nav-dropdown" id="projectsDropdown">
-        <button class="nav-button nav-primary-button" onclick="toggleDropdown(event)">
+        <button class="nav-button nav-primary-button" id="projectsButton" type="button">
           Projects
           <svg class="nav-icon nav-icon-small" style="margin-left: 4px;" viewBox="0 0 24 24">
             <polyline points="6,9 12,15 18,9"/>
           </svg>
         </button>
-        <div class="nav-dropdown-content">
+        <div class="nav-dropdown-content" id="dropdownContent">
           <a href="https://nyc-weather.willruppel.com/" target="_blank" rel="noopener noreferrer" class="nav-dropdown-item">
             <svg class="nav-icon nav-icon-small" viewBox="0 0 24 24">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -273,6 +288,97 @@ font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   </div>
 </header>
 
+<script>
+(function() {
+  'use strict';
+  
+  // Get elements
+  const projectsButton = document.getElementById('projectsButton');
+  const projectsDropdown = document.getElementById('projectsDropdown');
+  const dropdownContent = document.getElementById('dropdownContent');
+  const themeToggle = document.getElementById('themeToggle');
+  
+  let isDropdownOpen = false;
+  
+  // Toggle dropdown function
+  function toggleDropdown() {
+    isDropdownOpen = !isDropdownOpen;
+    
+    if (isDropdownOpen) {
+      projectsDropdown.classList.add('show');
+    } else {
+      projectsDropdown.classList.remove('show');
+    }
+  }
+  
+  // Close dropdown function
+  function closeDropdown() {
+    isDropdownOpen = false;
+    projectsDropdown.classList.remove('show');
+  }
+  
+  // Projects button click handler
+  if (projectsButton) {
+    projectsButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleDropdown();
+    });
+  }
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!projectsDropdown.contains(e.target)) {
+      closeDropdown();
+    }
+  });
+  
+  // Prevent dropdown from closing when clicking inside
+  if (dropdownContent) {
+    dropdownContent.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  }
+  
+  // Theme toggle functionality
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      const html = document.documentElement;
+      const lightIcon = document.querySelector('.theme-icon-light');
+      const darkIcon = document.querySelector('.theme-icon-dark');
+      
+      if (html.style.colorScheme === 'dark') {
+        html.style.colorScheme = 'light';
+        if (lightIcon) lightIcon.style.display = 'block';
+        if (darkIcon) darkIcon.style.display = 'none';
+      } else {
+        html.style.colorScheme = 'dark';
+        if (lightIcon) lightIcon.style.display = 'none';
+        if (darkIcon) darkIcon.style.display = 'block';
+      }
+    });
+  }
+  
+  // Close dropdown on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeDropdown();
+    }
+  });
+  
+  // Handle focus/blur to prevent button disappearing
+  if (projectsButton) {
+    projectsButton.addEventListener('blur', function(e) {
+      // Small delay to allow click events to process
+      setTimeout(function() {
+        if (!projectsDropdown.contains(document.activeElement)) {
+          closeDropdown();
+        }
+      }, 100);
+    });
+  }
+})();
+</script>
 <script>
   // Dropdown functionality
   function toggleDropdown(event) {
